@@ -49,7 +49,7 @@ public class Payment {
     @Column(name = "card_type")
     private String cardType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private Customer customer;
 

@@ -37,7 +37,7 @@ public class Employee {
         @Column(name = "phone")
         private String phone;
 
-        @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "employee")
         private List<Address> addresses;
 
 }

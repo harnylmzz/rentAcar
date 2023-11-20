@@ -22,7 +22,7 @@ public class Model {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "model", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "model")
     private List<Car> cars;
 
 }

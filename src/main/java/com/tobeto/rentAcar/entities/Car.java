@@ -47,7 +47,7 @@ public class Car {
     private double rateOfEngine;
 
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "car")
     private List<RentalAgreement> rentalAgreements;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -58,7 +58,7 @@ public class Car {
     @JoinColumn(name = "model_id")
     private Model model;
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "car")
     private List<Insurance> insurances;
 
 }

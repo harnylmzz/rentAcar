@@ -34,7 +34,7 @@ public class Reservation {
     @Column(name = "terms_and_conditions")
     private String termsAndConditions;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
     private Customer customer;
 
