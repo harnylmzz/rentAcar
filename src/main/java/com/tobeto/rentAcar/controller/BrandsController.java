@@ -1,6 +1,7 @@
 package com.tobeto.rentAcar.controller;
 
 import com.tobeto.rentAcar.entities.Brand;
+import com.tobeto.rentAcar.repository.BrandRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,28 +11,46 @@ import java.util.List;
 public class BrandsController {
 
 
-    @GetMapping
+    private final BrandRepository brandRepository;
+
+    public BrandsController(BrandRepository brandRepository) {
+        this.brandRepository = brandRepository;
+    }
+
+
+    @GetMapping("/getall")
     public List<Brand> getAll() {
-        return null;
+        return brandRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Brand getById(@PathVariable int id) {
-        return null;
+    @GetMapping("/getById")
+    public Brand getById(int id) {
+        return brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public void add(@RequestBody Brand brand) {
+        brandRepository.save(brand);
 
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public void update(@RequestBody Brand brand) {
+        Brand brand1 = brandRepository.findById(brand.getId())
+                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + brand.getId()));
 
+        brand.setId(brand.getId());
+        brand.setName(brand.getName());
+
+        brandRepository.save(brand);
     }
 
-    @DeleteMapping
-    public void delete(@PathVariable int id) {
+    @DeleteMapping("/delete")
+    public void delete(int id) {
 
+        brandRepository.deleteById(id);
     }
+
+
 }

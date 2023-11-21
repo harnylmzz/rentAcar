@@ -46,7 +46,6 @@ public class Car {
     @Column(name = "rate_of_engine")
     private double rateOfEngine;
 
-
     @OneToMany(mappedBy = "car")
     private List<RentalAgreement> rentalAgreements;
 
