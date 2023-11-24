@@ -1,9 +1,15 @@
 package com.tobeto.rentAcar.controller;
 
+import com.tobeto.rentAcar.dtos.requests.customer.AddCustomerRequest;
+import com.tobeto.rentAcar.dtos.requests.customer.DeleteCustomerRequest;
+import com.tobeto.rentAcar.dtos.requests.customer.UpdateCustomerRequest;
+import com.tobeto.rentAcar.dtos.responses.customer.GetCustomerListResponse;
+import com.tobeto.rentAcar.dtos.responses.customer.GetCustomerResponse;
 import com.tobeto.rentAcar.entities.Customer;
 import com.tobeto.rentAcar.repository.CustomerRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/customers")
@@ -17,39 +23,75 @@ public class CustomersController {
     }
 
     @GetMapping("/getall")
-    public List<Customer> getAll() {
-        return customerRepository.findAll();
+    public List<GetCustomerListResponse> getAll() {
+
+        List<Customer> customer = customerRepository.findAll();
+        List<GetCustomerListResponse> responseList = new ArrayList<>();
+
+        for (Customer customer1 : customer) {
+            GetCustomerListResponse response = new GetCustomerListResponse();
+
+            response.setId(customer1.getId());
+            response.setFirstName(customer1.getFirstName());
+            response.setLastName(customer1.getLastName());
+
+            responseList.add(response);
+        }
+
+        return responseList;
     }
 
-    @GetMapping("/getById")
-    public Customer getById(int id) {
-        return customerRepository.findById(id)
+    @GetMapping("/getbyid")
+    public GetCustomerResponse getById(int id) {
+
+        Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+
+        GetCustomerResponse getCustomerResponse = new GetCustomerResponse();
+
+        getCustomerResponse.setFirstName(customer.getFirstName());
+        getCustomerResponse.setLastName(customer.getLastName());
+
+        return getCustomerResponse;
+
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody Customer customer) {
+    public void add(@RequestBody AddCustomerRequest addCustomerRequest) {
+
+        Customer customer = new Customer();
+        customer.setFirstName(addCustomerRequest.getFirstName());
+        customer.setLastName(addCustomerRequest.getLastName());
+        customer.setNationalityId(addCustomerRequest.getNationalityId());
+        customer.setEmail(addCustomerRequest.getEmail());
+        customer.setPassword(addCustomerRequest.getPassword());
+        customer.setPhone(addCustomerRequest.getPhone());
+
         customerRepository.save(customer);
     }
 
     @PutMapping("/update")
-    public void uptade(@RequestBody Customer customer) {
-        Customer customer1 = customerRepository.findById(customer.getId())
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customer.getId()));
+    public void uptade(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
 
-        customer.setId(customer.getId());
-        customer.setFirstName(customer.getFirstName());
-        customer.setLastName(customer.getLastName());
-        customer.setNationalityId(customer.getNationalityId());
-        customer.setEmail(customer.getEmail());
-        customer.setPassword(customer.getPassword());
-        customer.setPhone(customer.getPhone());
+        Customer customer = customerRepository.findById(updateCustomerRequest.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + updateCustomerRequest.getId()));
+
+        customer.setId(updateCustomerRequest.getId());
+        customer.setFirstName(updateCustomerRequest.getFirstName());
+        customer.setLastName(updateCustomerRequest.getLastName());
+        customer.setNationalityId(updateCustomerRequest.getNationalityId());
+        customer.setEmail(updateCustomerRequest.getEmail());
+        customer.setPassword(updateCustomerRequest.getPassword());
+        customer.setPhone(updateCustomerRequest.getPhone());
 
         customerRepository.save(customer);
     }
 
     @DeleteMapping("/delete")
-    public void delete(int id) {
+    public DeleteCustomerRequest delete(int id) {
+
         customerRepository.deleteById(id);
+
+        return new DeleteCustomerRequest(id);
     }
 }

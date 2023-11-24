@@ -1,9 +1,15 @@
 package com.tobeto.rentAcar.controller;
 
+import com.tobeto.rentAcar.dtos.requests.car.AddCarRequest;
+import com.tobeto.rentAcar.dtos.requests.car.DeleteCarRequest;
+import com.tobeto.rentAcar.dtos.requests.car.UpdateCarRequest;
+import com.tobeto.rentAcar.dtos.responses.car.GetCarListResponse;
+import com.tobeto.rentAcar.dtos.responses.car.GetCarResponse;
 import com.tobeto.rentAcar.entities.Car;
 import com.tobeto.rentAcar.repository.CarRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/cars")
@@ -17,44 +23,84 @@ public class CarsController {
     }
 
     @GetMapping("/getall")
-    public List<Car> getAll() {
-        return carRepository.findAll();
+    public List<GetCarListResponse> getAll() {
+        List<Car> cars = carRepository.findAll();
+        List<GetCarListResponse> responseList = new ArrayList<>();
+
+        for (Car car : cars) {
+            GetCarListResponse response = new GetCarListResponse();
+
+            response.setId(car.getId());
+            response.setModelYear(car.getModelYear());
+            response.setName(car.getName());
+            response.setDailyPrice(car.getDailyPrice());
+            response.setPlate(car.getPlate());
+            response.setFuelType(car.getFuelType());
+
+            responseList.add(response);
+        }
+
+        return responseList;
     }
 
-    @GetMapping("/getById")
-    public Car getById(int id) {
-        return carRepository.findById(id)
+    @GetMapping("/getbyid")
+    public GetCarResponse getById(int id) {
+        Car car = carRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Car not found with id: " + id));
+
+        GetCarResponse getCarResponse = new GetCarResponse();
+        getCarResponse.setModelYear(car.getModelYear());
+        getCarResponse.setName(car.getName());
+        getCarResponse.setDailyPrice(car.getDailyPrice());
+        getCarResponse.setPlate(car.getPlate());
+        getCarResponse.setFuelType(car.getFuelType());
+
+        return getCarResponse;
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody Car car) {
+    public void add(@RequestBody AddCarRequest addCarRequest) {
+
+        Car car = new Car();
+
+        car.setModelYear(addCarRequest.getModelYear());
+        car.setName(addCarRequest.getName());
+        car.setDailyPrice(addCarRequest.getDailyPrice());
+        car.setPlate(addCarRequest.getPlate());
+        car.setFuelType(addCarRequest.getFuelType());
+        car.setColour(addCarRequest.getColour());
+        car.setManufacturingYear(addCarRequest.getManufacturingYear());
+        car.setMileage(addCarRequest.getMileage());
+        car.setRateOfEngine(addCarRequest.getRateOfEngine());
+
         carRepository.save(car);
     }
 
 
     @PutMapping("/update")
-    public void update(@RequestBody Car car) {
-        Car car1 = carRepository.findById(car.getId())
-                .orElseThrow(() -> new RuntimeException("Car not found with id: " + car.getId()));
+    public void update(@RequestBody UpdateCarRequest updateCarRequest) {
+        Car car = carRepository.findById(updateCarRequest.getId())
+                .orElseThrow(() -> new RuntimeException("Car not found with id: " + updateCarRequest.getId()));
 
-        car.setId(car.getId());
-        car.setColour(car.getColour());
-        car.setFuelType(car.getFuelType());
-        car.setMileage(car.getMileage());
-        car.setName(car.getName());
-        car.setDailyPrice(car.getDailyPrice());
-        car.setModelYear(car.getModelYear());
-        car.setPlate(car.getPlate());
-        car.setRateOfEngine(car.getRateOfEngine());
-        car.setManufacturingYear(car.getManufacturingYear());
+        car.setId(updateCarRequest.getId());
+        car.setModelYear(updateCarRequest.getModelYear());
+        car.setName(updateCarRequest.getName());
+        car.setDailyPrice(updateCarRequest.getDailyPrice());
+        car.setPlate(updateCarRequest.getPlate());
+        car.setColour(updateCarRequest.getColour());
+        car.setFuelType(updateCarRequest.getFuelType());
+        car.setManufacturingYear(updateCarRequest.getManufacturingYear());
+        car.setMileage(updateCarRequest.getMileage());
+        car.setRateOfEngine(updateCarRequest.getRateOfEngine());
 
         carRepository.save(car);
 
     }
 
     @DeleteMapping("/delete")
-    public void delete(int id) {
+    public DeleteCarRequest delete(int id) {
         carRepository.deleteById(id);
+
+        return new DeleteCarRequest(id);
     }
 }
