@@ -54,6 +54,13 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public void add(AddEmployeeRequest addEmployeeRequest) {
+
+        if (employeeRepository.existsByEmail(addEmployeeRequest.getEmail().trim()))
+            throw new RuntimeException("Employee already exists");
+
+        if (employeeRepository.existsByNationalityId(addEmployeeRequest.getNationalityId().trim()))
+            throw new RuntimeException("Employee already exists");
+
         Employee employee = new Employee();
 
         employee.setFirstName(addEmployeeRequest.getFirstName());

@@ -14,8 +14,8 @@ public class AddCarRequest {
 
     private int modelYear;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Name is mandatory")
+    @NotBlank(message = "Name is mandatory")
     @Size(min = 2, max = 50)
     private String name;
 

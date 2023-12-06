@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public String handleValidationException(MethodArgumentNotValidException exception) {
+    public String handleValidationException() {
         return "Validation error";
     }
 }

@@ -18,4 +18,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("SELECT c FROM Customer c WHERE c.lastName LIKE %:lastName%")
     List<Customer> searchLastName(String lastName);
 
+    boolean existsByEmail(String email);
+
+    boolean existsByNationalityId(String nationalityId);
+
 }

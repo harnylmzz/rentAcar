@@ -53,10 +53,10 @@ public class AddressManager implements AddressService {
     @Override
     public void add(AddAddressRequest addAddressRequest) {
 
-        if (addressRepository.existsByCountry(addAddressRequest.getCountry())) {
+        if (addressRepository.existsByCountry(addAddressRequest.getCountry().trim())) {
             throw new RuntimeException("Country already exists");
         }
-        if (addressRepository.existsByCity(addAddressRequest.getCity())) {
+        if (addressRepository.existsByCity(addAddressRequest.getCity().trim())) {
             throw new RuntimeException("City already exists");
         }
 

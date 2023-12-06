@@ -20,4 +20,8 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     @Query("SELECT c FROM Car c WHERE c.name LIKE %:name%")
     List<Car> searchNameContaining(String name);
+
+    boolean existsByName(String name);
+
+    boolean existsByPlate(String plate);
 }

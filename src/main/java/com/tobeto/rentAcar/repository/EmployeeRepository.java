@@ -17,4 +17,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("SELECT e FROM Employee e WHERE e.lastName LIKE %:lastName%")
     List<Employee> searchLastName(String lastName);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByNationalityId(String nationalityId);
 }

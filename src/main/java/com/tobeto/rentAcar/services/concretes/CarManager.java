@@ -59,6 +59,13 @@ public class CarManager implements CarService {
 
     @Override
     public void add(AddCarRequest addCarRequest) {
+
+        if (carRepository.existsByName(addCarRequest.getName().trim()))
+            throw new RuntimeException("Car already exists");
+
+        if (carRepository.existsByPlate(addCarRequest.getPlate().trim()))
+            throw new RuntimeException("Plate already exists");
+
         Car car = new Car();
 
         car.setModelYear(addCarRequest.getModelYear());

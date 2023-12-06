@@ -40,5 +40,8 @@ public class AddCustomerRequest {
     @Size(min = 11, max = 11)
     private String nationalityId;
 
+    @NotBlank
+    @NotNull
+    @Size(min = 11, max = 11)
     private String phone;
 }

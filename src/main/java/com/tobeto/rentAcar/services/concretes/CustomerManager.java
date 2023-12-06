@@ -52,6 +52,12 @@ public class CustomerManager implements CustomerService {
     @Override
     public void add(AddCustomerRequest addCustomerRequest) {
 
+        if (customerRepository.existsByEmail(addCustomerRequest.getEmail().trim()))
+            throw new RuntimeException("Customer already exists");
+
+        if (customerRepository.existsByNationalityId(addCustomerRequest.getNationalityId().trim()))
+            throw new RuntimeException("Customer already exists");
+
         Customer customer = new Customer();
         customer.setFirstName(addCustomerRequest.getFirstName());
         customer.setLastName(addCustomerRequest.getLastName());

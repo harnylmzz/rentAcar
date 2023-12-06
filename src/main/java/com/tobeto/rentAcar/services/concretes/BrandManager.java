@@ -51,6 +51,9 @@ public class BrandManager implements BrandService {
     @Override
     public void add(AddBrandRequest addBrandRequest) {
 
+        if (brandRepository.existsByName(addBrandRequest.getName().trim()))
+            throw new RuntimeException("Brand already exists");
+
         Brand brand = new Brand();
 
         brand.setName(addBrandRequest.getName());
