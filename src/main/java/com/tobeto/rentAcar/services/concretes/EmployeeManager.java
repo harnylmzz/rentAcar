@@ -3,11 +3,11 @@ package com.tobeto.rentAcar.services.concretes;
 import com.tobeto.rentAcar.entities.Employee;
 import com.tobeto.rentAcar.repository.EmployeeRepository;
 import com.tobeto.rentAcar.services.abstracts.EmployeeService;
-import com.tobeto.rentAcar.services.dtos.requests.employee.AddEmployeeRequest;
-import com.tobeto.rentAcar.services.dtos.requests.employee.DeleteEmployeeRequest;
-import com.tobeto.rentAcar.services.dtos.requests.employee.UpdateEmployeeRequest;
-import com.tobeto.rentAcar.services.dtos.responses.employee.GetEmployeeListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.employee.GetEmployeeResponse;
+import com.tobeto.rentAcar.dtos.requests.employee.AddEmployeeRequest;
+import com.tobeto.rentAcar.dtos.requests.employee.DeleteEmployeeRequest;
+import com.tobeto.rentAcar.dtos.requests.employee.UpdateEmployeeRequest;
+import com.tobeto.rentAcar.dtos.responses.employee.GetEmployeeListResponse;
+import com.tobeto.rentAcar.dtos.responses.employee.GetEmployeeResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -87,5 +87,70 @@ public class EmployeeManager implements EmployeeService {
     public void delete(DeleteEmployeeRequest deleteEmployeeRequest) {
         employeeRepository.deleteById(deleteEmployeeRequest.getId());
 
+    }
+
+    @Override
+    public List<GetEmployeeListResponse> findByFirstName(String firstName) {
+
+        List<Employee> employees = employeeRepository.findByFirstName(firstName);
+        List<GetEmployeeListResponse> responseList = new ArrayList<>();
+
+        for (Employee employee : employees) {
+
+            GetEmployeeListResponse response = new GetEmployeeListResponse();
+
+            response.setId(employee.getId());
+            response.setFirstName(employee.getFirstName());
+            response.setLastName(employee.getLastName());
+
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetEmployeeListResponse> findByLastName(String lastName) {
+
+        List<Employee> employees = employeeRepository.findByLastName(lastName);
+        List<GetEmployeeListResponse> responseList = new ArrayList<>();
+
+        for (Employee employee : employees) {
+
+            GetEmployeeListResponse response = new GetEmployeeListResponse();
+
+            response.setId(employee.getId());
+            response.setFirstName(employee.getFirstName());
+            response.setLastName(employee.getLastName());
+
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetEmployeeListResponse> searchName(String firstName) {
+
+        List<Employee> employees = employeeRepository.searchName(firstName);
+        List<GetEmployeeListResponse> responseList = new ArrayList<>();
+
+        for (Employee employee : employees) {
+            responseList.add(new GetEmployeeListResponse(employee.getId(),
+                    employee.getFirstName(), employee.getLastName()));
+
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetEmployeeListResponse> searchLastName(String lastName) {
+
+        List<Employee> employees = employeeRepository.searchLastName(lastName);
+        List<GetEmployeeListResponse> responseList = new ArrayList<>();
+
+        for (Employee employee : employees) {
+            responseList.add(new GetEmployeeListResponse(employee.getId(),
+                    employee.getFirstName(), employee.getLastName()));
+        }
+        return responseList;
     }
 }

@@ -1,15 +1,15 @@
 package com.tobeto.rentAcar.controller;
 
 import com.tobeto.rentAcar.services.abstracts.EmployeeService;
-import com.tobeto.rentAcar.services.dtos.requests.employee.AddEmployeeRequest;
-import com.tobeto.rentAcar.services.dtos.requests.employee.DeleteEmployeeRequest;
-import com.tobeto.rentAcar.services.dtos.requests.employee.UpdateEmployeeRequest;
-import com.tobeto.rentAcar.services.dtos.responses.employee.GetEmployeeListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.employee.GetEmployeeResponse;
+import com.tobeto.rentAcar.dtos.requests.employee.AddEmployeeRequest;
+import com.tobeto.rentAcar.dtos.requests.employee.DeleteEmployeeRequest;
+import com.tobeto.rentAcar.dtos.requests.employee.UpdateEmployeeRequest;
+import com.tobeto.rentAcar.dtos.responses.employee.GetEmployeeListResponse;
+import com.tobeto.rentAcar.dtos.responses.employee.GetEmployeeResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/employees")
@@ -22,7 +22,7 @@ public class EmployeesController {
     @GetMapping("/getall")
     public List<GetEmployeeListResponse> employees() {
 
-      return this.employeeService.getAll();
+        return this.employeeService.getAll();
     }
 
     @GetMapping("/getbyid")
@@ -33,7 +33,7 @@ public class EmployeesController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody AddEmployeeRequest addEmployeeRequest) {
+    public void add(@RequestBody @Valid AddEmployeeRequest addEmployeeRequest) {
 
         this.employeeService.add(addEmployeeRequest);
     }
@@ -48,5 +48,25 @@ public class EmployeesController {
     public void delete(DeleteEmployeeRequest deleteEmployeeRequest) {
         this.employeeService.delete(deleteEmployeeRequest);
 
+    }
+
+    @GetMapping("/findbyfirstname")
+    public List<GetEmployeeListResponse> findByFirstName(@RequestParam String firstName) {
+        return this.employeeService.findByFirstName(firstName);
+    }
+
+    @GetMapping("/findbylastname")
+    public List<GetEmployeeListResponse> findByLastName(@RequestParam String lastName) {
+        return this.employeeService.findByLastName(lastName);
+    }
+
+    @GetMapping("/searchname")
+    public List<GetEmployeeListResponse> searchName(@RequestParam String firstName) {
+        return this.employeeService.searchName(firstName);
+    }
+
+    @GetMapping("/searchlastname")
+    public List<GetEmployeeListResponse> searchLastName(@RequestParam String lastName) {
+        return this.employeeService.searchLastName(lastName);
     }
 }

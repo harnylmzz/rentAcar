@@ -3,12 +3,11 @@ package com.tobeto.rentAcar.services.concretes;
 import com.tobeto.rentAcar.entities.Customer;
 import com.tobeto.rentAcar.repository.CustomerRepository;
 import com.tobeto.rentAcar.services.abstracts.CustomerService;
-import com.tobeto.rentAcar.services.dtos.requests.customer.AddCustomerRequest;
-import com.tobeto.rentAcar.services.dtos.requests.customer.DeleteCustomerRequest;
-import com.tobeto.rentAcar.services.dtos.requests.customer.UpdateCustomerRequest;
-import com.tobeto.rentAcar.services.dtos.responses.car.GetCarListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.customer.GetCustomerListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.customer.GetCustomerResponse;
+import com.tobeto.rentAcar.dtos.requests.customer.AddCustomerRequest;
+import com.tobeto.rentAcar.dtos.requests.customer.DeleteCustomerRequest;
+import com.tobeto.rentAcar.dtos.requests.customer.UpdateCustomerRequest;
+import com.tobeto.rentAcar.dtos.responses.customer.GetCustomerListResponse;
+import com.tobeto.rentAcar.dtos.responses.customer.GetCustomerResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +39,7 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public GetCustomerResponse getById(int id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
 
         GetCustomerResponse getCustomerResponse = new GetCustomerResponse();
 
@@ -69,8 +67,7 @@ public class CustomerManager implements CustomerService {
     @Override
     public void update(UpdateCustomerRequest updateCustomerRequest) {
 
-        Customer customer = customerRepository.findById(updateCustomerRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + updateCustomerRequest.getId()));
+        Customer customer = customerRepository.findById(updateCustomerRequest.getId()).orElseThrow(() -> new RuntimeException("Customer not found with id: " + updateCustomerRequest.getId()));
 
         customer.setId(updateCustomerRequest.getId());
         customer.setFirstName(updateCustomerRequest.getFirstName());
@@ -86,5 +83,77 @@ public class CustomerManager implements CustomerService {
     @Override
     public void delete(DeleteCustomerRequest deleteCustomerRequest) {
         customerRepository.deleteById(deleteCustomerRequest.getId());
+    }
+
+    @Override
+    public List<GetCustomerListResponse> findByFirstName(String firstName) {
+
+        List<Customer> customers = customerRepository.findByFirstName(firstName);
+        List<GetCustomerListResponse> responseList = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            GetCustomerListResponse response = new GetCustomerListResponse();
+
+            response.setId(customer.getId());
+            response.setFirstName(customer.getFirstName());
+            response.setLastName(customer.getLastName());
+
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCustomerListResponse> findByLastName(String lastName) {
+
+        List<Customer> customers = customerRepository.findByLastName(lastName);
+        List<GetCustomerListResponse> responseList = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            GetCustomerListResponse response = new GetCustomerListResponse();
+
+            response.setId(customer.getId());
+            response.setFirstName(customer.getFirstName());
+            response.setLastName(customer.getLastName());
+
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCustomerListResponse> searchName(String firstName) {
+
+        List<Customer> customers = customerRepository.searchName(firstName);
+        List<GetCustomerListResponse> responseList = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            GetCustomerListResponse response = new GetCustomerListResponse();
+
+            response.setId(customer.getId());
+            response.setFirstName(customer.getFirstName());
+            response.setLastName(customer.getLastName());
+
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCustomerListResponse> searchLastName(String lastName) {
+
+        List<Customer> customers = customerRepository.searchLastName(lastName);
+        List<GetCustomerListResponse> responseList = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            GetCustomerListResponse response = new GetCustomerListResponse();
+
+            response.setId(customer.getId());
+            response.setFirstName(customer.getFirstName());
+            response.setLastName(customer.getLastName());
+
+            responseList.add(response);
+        }
+        return responseList;
     }
 }

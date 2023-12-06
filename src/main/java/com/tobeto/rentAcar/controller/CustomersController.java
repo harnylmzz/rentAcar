@@ -1,15 +1,15 @@
 package com.tobeto.rentAcar.controller;
 
 import com.tobeto.rentAcar.services.abstracts.CustomerService;
-import com.tobeto.rentAcar.services.dtos.requests.customer.AddCustomerRequest;
-import com.tobeto.rentAcar.services.dtos.requests.customer.DeleteCustomerRequest;
-import com.tobeto.rentAcar.services.dtos.requests.customer.UpdateCustomerRequest;
-import com.tobeto.rentAcar.services.dtos.responses.customer.GetCustomerListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.customer.GetCustomerResponse;
+import com.tobeto.rentAcar.dtos.requests.customer.AddCustomerRequest;
+import com.tobeto.rentAcar.dtos.requests.customer.DeleteCustomerRequest;
+import com.tobeto.rentAcar.dtos.requests.customer.UpdateCustomerRequest;
+import com.tobeto.rentAcar.dtos.responses.customer.GetCustomerListResponse;
+import com.tobeto.rentAcar.dtos.responses.customer.GetCustomerResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/customers")
@@ -33,7 +33,7 @@ public class CustomersController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody AddCustomerRequest addCustomerRequest) {
+    public void add(@RequestBody @Valid AddCustomerRequest addCustomerRequest) {
 
         this.customerService.add(addCustomerRequest);
     }
@@ -49,5 +49,25 @@ public class CustomersController {
 
         this.customerService.delete(deleteCustomerRequest);
 
+    }
+
+    @GetMapping("/findbyfirstname")
+    public List<GetCustomerListResponse> findByFirstName(@RequestParam String firstName) {
+        return this.customerService.findByFirstName(firstName);
+    }
+
+    @GetMapping("/findbylastname")
+    public List<GetCustomerListResponse> findByLastName(@RequestParam String lastName) {
+        return this.customerService.findByLastName(lastName);
+    }
+
+    @GetMapping("/searchname")
+    public List<GetCustomerListResponse> searchName(@RequestParam String firstName) {
+        return this.customerService.searchName(firstName);
+    }
+
+    @GetMapping("/searchlastname")
+    public List<GetCustomerListResponse> searchLastName(@RequestParam String lastName) {
+        return this.customerService.searchLastName(lastName);
     }
 }

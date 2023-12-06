@@ -1,17 +1,15 @@
 package com.tobeto.rentAcar.controller;
 
 import com.tobeto.rentAcar.services.abstracts.CarService;
-import com.tobeto.rentAcar.services.dtos.requests.car.AddCarRequest;
-import com.tobeto.rentAcar.services.dtos.requests.car.DeleteCarRequest;
-import com.tobeto.rentAcar.services.dtos.requests.car.UpdateCarRequest;
-import com.tobeto.rentAcar.services.dtos.responses.car.GetCarListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.car.GetCarResponse;
-import com.tobeto.rentAcar.entities.Car;
-import com.tobeto.rentAcar.repository.CarRepository;
+import com.tobeto.rentAcar.dtos.requests.car.AddCarRequest;
+import com.tobeto.rentAcar.dtos.requests.car.DeleteCarRequest;
+import com.tobeto.rentAcar.dtos.requests.car.UpdateCarRequest;
+import com.tobeto.rentAcar.dtos.responses.car.GetCarListResponse;
+import com.tobeto.rentAcar.dtos.responses.car.GetCarResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/cars")
@@ -33,7 +31,7 @@ public class CarsController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody AddCarRequest addCarRequest) {
+    public void add(@RequestBody @Valid AddCarRequest addCarRequest) {
 
         this.carService.add(addCarRequest);
     }
@@ -47,6 +45,31 @@ public class CarsController {
 
     @DeleteMapping("/delete")
     public void delete(DeleteCarRequest deleteCarRequest) {
-      this.carService.delete(deleteCarRequest);
+        this.carService.delete(deleteCarRequest);
+    }
+
+    @GetMapping("/findbyname")
+    public List<GetCarListResponse> findByName(String name) {
+        return this.carService.findByName(name);
+    }
+
+    @GetMapping("/findbymodelyear")
+    public List<GetCarListResponse> findByModelYear(int modelYear) {
+        return this.carService.findByModelYear(modelYear);
+    }
+
+    @GetMapping("/findbynamecontaining")
+    public List<GetCarListResponse> findByNameContaining(String name) {
+        return this.carService.findByNameContaining(name);
+    }
+
+    @GetMapping("/searchname")
+    public List<GetCarListResponse> searchName(String name) {
+        return this.carService.searchName(name);
+    }
+
+    @GetMapping("/searchnamecontaining")
+    public List<GetCarListResponse> searchNameContaining(String name) {
+        return this.carService.searchNameContaining(name);
     }
 }

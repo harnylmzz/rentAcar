@@ -3,11 +3,11 @@ package com.tobeto.rentAcar.services.concretes;
 import com.tobeto.rentAcar.entities.Car;
 import com.tobeto.rentAcar.repository.CarRepository;
 import com.tobeto.rentAcar.services.abstracts.CarService;
-import com.tobeto.rentAcar.services.dtos.requests.car.AddCarRequest;
-import com.tobeto.rentAcar.services.dtos.requests.car.DeleteCarRequest;
-import com.tobeto.rentAcar.services.dtos.requests.car.UpdateCarRequest;
-import com.tobeto.rentAcar.services.dtos.responses.car.GetCarListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.car.GetCarResponse;
+import com.tobeto.rentAcar.dtos.requests.car.AddCarRequest;
+import com.tobeto.rentAcar.dtos.requests.car.DeleteCarRequest;
+import com.tobeto.rentAcar.dtos.requests.car.UpdateCarRequest;
+import com.tobeto.rentAcar.dtos.responses.car.GetCarListResponse;
+import com.tobeto.rentAcar.dtos.responses.car.GetCarResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +97,74 @@ public class CarManager implements CarService {
 
     @Override
     public void delete(DeleteCarRequest deleteCarRequest) {
-       carRepository.deleteById(deleteCarRequest.getId());
+        carRepository.deleteById(deleteCarRequest.getId());
 
     }
+
+    @Override
+    public List<GetCarListResponse> findByName(String name) {
+
+        List<Car> cars = carRepository.findByName(name);
+        List<GetCarListResponse> responseList = new ArrayList<>();
+
+        for (Car car : cars) {
+            responseList.add(new GetCarListResponse(car.getId(), car.getModelYear(), car.getName(),
+                    car.getDailyPrice(), car.getPlate(), car.getFuelType()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCarListResponse> findByModelYear(int modelYear) {
+
+        List<Car> cars = carRepository.findByModelYear(modelYear);
+        List<GetCarListResponse> responseList = new ArrayList<>();
+
+        for (Car car : cars) {
+            responseList.add(new GetCarListResponse(car.getId(), car.getModelYear(), car.getName(),
+                    car.getDailyPrice(), car.getPlate(), car.getFuelType()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCarListResponse> findByNameContaining(String name) {
+
+        List<Car> cars = carRepository.findByNameContaining(name);
+        List<GetCarListResponse> responseList = new ArrayList<>();
+
+        for (Car car : cars) {
+            responseList.add(new GetCarListResponse(car.getId(), car.getModelYear(), car.getName(),
+                    car.getDailyPrice(), car.getPlate(), car.getFuelType()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCarListResponse> searchName(String name) {
+
+        List<Car> cars = carRepository.searchName(name);
+        List<GetCarListResponse> responseList = new ArrayList<>();
+
+        for (Car car : cars) {
+            responseList.add(new GetCarListResponse(car.getId(), car.getModelYear(), car.getName(),
+                    car.getDailyPrice(), car.getPlate(), car.getFuelType()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCarListResponse> searchNameContaining(String name) {
+
+        List<Car> cars = carRepository.searchNameContaining(name);
+        List<GetCarListResponse> responseList = new ArrayList<>();
+
+        for (Car car : cars) {
+            responseList.add(new GetCarListResponse(car.getId(), car.getModelYear(), car.getName(),
+                    car.getDailyPrice(), car.getPlate(), car.getFuelType()));
+        }
+        return responseList;
+    }
+
+
 }

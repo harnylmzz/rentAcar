@@ -3,11 +3,11 @@ package com.tobeto.rentAcar.services.concretes;
 import com.tobeto.rentAcar.entities.Brand;
 import com.tobeto.rentAcar.repository.BrandRepository;
 import com.tobeto.rentAcar.services.abstracts.BrandService;
-import com.tobeto.rentAcar.services.dtos.requests.brand.AddBrandRequest;
-import com.tobeto.rentAcar.services.dtos.requests.brand.DeleteBrandRequest;
-import com.tobeto.rentAcar.services.dtos.requests.brand.UpdateBrandRequest;
-import com.tobeto.rentAcar.services.dtos.responses.brand.GetBrandListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.brand.GetBrandResponse;
+import com.tobeto.rentAcar.dtos.requests.brand.AddBrandRequest;
+import com.tobeto.rentAcar.dtos.requests.brand.DeleteBrandRequest;
+import com.tobeto.rentAcar.dtos.requests.brand.UpdateBrandRequest;
+import com.tobeto.rentAcar.dtos.responses.brand.GetBrandListResponse;
+import com.tobeto.rentAcar.dtos.responses.brand.GetBrandResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +76,81 @@ public class BrandManager implements BrandService {
 
         brandRepository.deleteById(deleteBrandRequest.getId());
 
+    }
+
+    @Override
+    public List<GetBrandListResponse> findByName(String name) {
+
+        List<Brand> brands = brandRepository.findByName(name);
+        List<GetBrandListResponse> responseList = new ArrayList<>();
+
+        for (Brand brand : brands) {
+            responseList.add(new GetBrandListResponse(brand.getId(), brand.getName()));
+
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetBrandListResponse> findByNameContaining(String name) {
+
+        List<Brand> brands = brandRepository.findByNameContaining(name);
+        List<GetBrandListResponse> responseList = new ArrayList<>();
+
+        for (Brand brand : brands) {
+            responseList.add(new GetBrandListResponse(brand.getId(), brand.getName()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetBrandListResponse> findByNameStartingWith(String name) {
+
+        List<Brand> brands = brandRepository.findByNameStartingWith(name);
+        List<GetBrandListResponse> responseList = new ArrayList<>();
+
+        for (Brand brand : brands
+        ) {
+            responseList.add(new GetBrandListResponse(brand.getId(), brand.getName()));
+
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetBrandListResponse> findByNameEndingWith(String name) {
+
+        List<Brand> brands = brandRepository.findByNameEndingWith(name);
+        List<GetBrandListResponse> responseList = new ArrayList<>();
+
+        for (Brand brand : brands) {
+            responseList.add(new GetBrandListResponse(brand.getId(), brand.getName()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetBrandListResponse> searchName(String name) {
+
+        List<Brand> brands = brandRepository.searchName(name);
+        List<GetBrandListResponse> responseList = new ArrayList<>();
+
+        for (Brand brand : brands) {
+            responseList.add(new GetBrandListResponse(brand.getId(), brand.getName()));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetBrandListResponse> searchNameContaining(String name) {
+
+        List<Brand> brands = brandRepository.searchNameContaining(name);
+        List<GetBrandListResponse> responseList = new ArrayList<>();
+
+        for (Brand brand : brands) {
+            responseList.add(new GetBrandListResponse(brand.getId(), brand.getName()));
+        }
+        return responseList;
     }
 
 }

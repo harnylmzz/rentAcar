@@ -1,17 +1,15 @@
 package com.tobeto.rentAcar.controller;
 
 import com.tobeto.rentAcar.services.abstracts.BrandService;
-import com.tobeto.rentAcar.services.dtos.requests.brand.AddBrandRequest;
-import com.tobeto.rentAcar.services.dtos.requests.brand.DeleteBrandRequest;
-import com.tobeto.rentAcar.services.dtos.requests.brand.UpdateBrandRequest;
-import com.tobeto.rentAcar.services.dtos.responses.brand.GetBrandListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.brand.GetBrandResponse;
-import com.tobeto.rentAcar.entities.Brand;
-import com.tobeto.rentAcar.repository.BrandRepository;
+import com.tobeto.rentAcar.dtos.requests.brand.AddBrandRequest;
+import com.tobeto.rentAcar.dtos.requests.brand.DeleteBrandRequest;
+import com.tobeto.rentAcar.dtos.requests.brand.UpdateBrandRequest;
+import com.tobeto.rentAcar.dtos.responses.brand.GetBrandListResponse;
+import com.tobeto.rentAcar.dtos.responses.brand.GetBrandResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,7 +35,7 @@ public class BrandsController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody AddBrandRequest addBrandRequest) {
+    public void add(@RequestBody @Valid AddBrandRequest addBrandRequest) {
 
         this.brandService.add(addBrandRequest);
 
@@ -55,5 +53,35 @@ public class BrandsController {
     public void delete(DeleteBrandRequest deleteBrandRequest) {
 
         this.brandService.delete(deleteBrandRequest);
+    }
+
+    @GetMapping("/findbyname")
+    public List<GetBrandListResponse> findByName(@RequestParam String name) {
+        return this.brandService.findByName(name);
+    }
+
+    @GetMapping("/findbynamecontaining")
+    public List<GetBrandListResponse> findByNameContaining(@RequestParam String name) {
+        return this.brandService.findByNameContaining(name);
+    }
+
+    @GetMapping("/findbynamestartingwith")
+    public List<GetBrandListResponse> findByNameStartingWith(@RequestParam String name) {
+        return this.brandService.findByNameStartingWith(name);
+    }
+
+    @GetMapping("/findbynameendingwith")
+    public List<GetBrandListResponse> findByNameEndingWith(@RequestParam String name) {
+        return this.brandService.findByNameEndingWith(name);
+    }
+
+    @GetMapping("/searchname")
+    public List<GetBrandListResponse> searchName(@RequestParam String name) {
+        return this.brandService.searchName(name);
+    }
+
+    @GetMapping("/searchnamecontaining")
+    public List<GetBrandListResponse> searchNameContaining(@RequestParam String name) {
+        return this.brandService.searchNameContaining(name);
     }
 }

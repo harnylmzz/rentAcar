@@ -3,11 +3,11 @@ package com.tobeto.rentAcar.services.concretes;
 import com.tobeto.rentAcar.entities.Address;
 import com.tobeto.rentAcar.repository.AddressRepository;
 import com.tobeto.rentAcar.services.abstracts.AddressService;
-import com.tobeto.rentAcar.services.dtos.requests.address.AddAddressRequest;
-import com.tobeto.rentAcar.services.dtos.requests.address.DeleteAddressRequest;
-import com.tobeto.rentAcar.services.dtos.requests.address.UpdateAddressRequest;
-import com.tobeto.rentAcar.services.dtos.responses.address.GetAddressListResponse;
-import com.tobeto.rentAcar.services.dtos.responses.address.GetAddressResponse;
+import com.tobeto.rentAcar.dtos.requests.address.AddAddressRequest;
+import com.tobeto.rentAcar.dtos.requests.address.DeleteAddressRequest;
+import com.tobeto.rentAcar.dtos.requests.address.UpdateAddressRequest;
+import com.tobeto.rentAcar.dtos.responses.address.GetAddressListResponse;
+import com.tobeto.rentAcar.dtos.responses.address.GetAddressResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +53,13 @@ public class AddressManager implements AddressService {
     @Override
     public void add(AddAddressRequest addAddressRequest) {
 
+        if (addressRepository.existsByCountry(addAddressRequest.getCountry())) {
+            throw new RuntimeException("Country already exists");
+        }
+        if (addressRepository.existsByCity(addAddressRequest.getCity())) {
+            throw new RuntimeException("City already exists");
+        }
+
         Address address = new Address();
 
         address.setCountry(addAddressRequest.getCountry());
@@ -83,6 +90,60 @@ public class AddressManager implements AddressService {
 
         addressRepository.deleteById(deleteAddressRequest.getId());
 
+    }
+
+    @Override
+    public List<GetAddressListResponse> findByCountry(String name) {
+
+        List<Address> addresses = addressRepository.findByCountry(name);
+        List<GetAddressListResponse> responseList = new ArrayList<>();
+
+        for (Address address : addresses) {
+            responseList.add(new GetAddressListResponse(address.getId(), address.getCountry(), address.getCity()
+            ));
+        }
+
+
+        return responseList;
+    }
+
+    @Override
+    public List<GetAddressListResponse> findByCity(String name) {
+
+        List<Address> addresses = addressRepository.findByCity(name);
+        List<GetAddressListResponse> responseList = new ArrayList<>();
+
+        for (Address address : addresses) {
+            responseList.add(new GetAddressListResponse(address.getId(), address.getCountry(), address.getCity()));
+
+        }
+
+        return responseList;
+    }
+
+    @Override
+    public List<GetAddressListResponse> searchCountry(String name) {
+
+        List<Address> addresses = addressRepository.searchCountry(name);
+        List<GetAddressListResponse> responseList = new ArrayList<>();
+
+        for (Address address : addresses) {
+            responseList.add(new GetAddressListResponse(address.getId(), address.getCountry(), address.getCity()));
+        }
+
+        return responseList;
+    }
+
+    @Override
+    public List<GetAddressListResponse> searchCity(String name) {
+
+        List<Address> addresses = addressRepository.searchCity(name);
+        List<GetAddressListResponse> responseList = new ArrayList<>();
+
+        for (Address address : addresses) {
+            responseList.add(new GetAddressListResponse(address.getId(), address.getCountry(), address.getCity()));
+        }
+        return responseList;
     }
 }
 
